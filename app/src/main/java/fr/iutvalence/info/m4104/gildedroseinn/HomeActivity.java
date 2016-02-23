@@ -1,18 +1,32 @@
 package fr.iutvalence.info.m4104.gildedroseinn;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
+import fr.iutvalence.info.m4104.gildedroseinn.utils.ObjectSerializer;
+
+import java.io.IOException;
 
 
 public class HomeActivity extends Activity {
+
+    private GildedRoseApplication app;
+
+    public HomeActivity() {
+        super();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_layout);
+        this.app = (GildedRoseApplication) this.getApplication();
+        this.refreshDays();
     }
 
     public void homeActivityClickListener(View view) {
@@ -31,17 +45,19 @@ public class HomeActivity extends Activity {
     }
 
     private void nextDay() {
-        GildedRoseApplication app = (GildedRoseApplication) this.getApplication();
-        app.incrementNbDays();
+        this.app.incrementNbDays();
+        this.refreshDays();
 
+        for (Item i : this.app.getShop())
+            GildedRose.updateItem(i);
+        for (Item i : this.app.getInventory())
+            GildedRose.updateItem(i);
+    }
+
+    private void refreshDays(){
         TextView daysText = (TextView) this.findViewById(R.id.day_text);
-        daysText.setText("Day " + app.getDaysPassed());
+        daysText.setText("Day " + this.app.getDaysPassed());
         daysText.invalidate();
-
-        for(Item i: app.getShop())
-            GildedRose.updateItem(i);
-        for(Item i: app.getInventory())
-            GildedRose.updateItem(i);
     }
 
     private void startInventoryActivity() {
@@ -52,4 +68,9 @@ public class HomeActivity extends Activity {
         this.startActivity(new Intent(this, ShopActivity.class));
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        this.app.savePreferences();
+    }
 }

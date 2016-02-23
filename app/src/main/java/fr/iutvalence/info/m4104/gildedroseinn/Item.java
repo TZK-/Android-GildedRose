@@ -1,6 +1,8 @@
 package fr.iutvalence.info.m4104.gildedroseinn;
 
-public class Item {
+import java.io.Serializable;
+
+public class Item implements Serializable{
     private final String name;
 
 	private int sellIn;

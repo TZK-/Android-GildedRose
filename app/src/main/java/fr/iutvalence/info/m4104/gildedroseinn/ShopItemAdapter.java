@@ -57,6 +57,8 @@ public class ShopItemAdapter extends ArrayAdapter<Item> {
 
                 AlertDialog alert = alertBuilder.create();
                 alert.show();
+
+                ((ShopActivity)ShopItemAdapter.this.activity).refreshMoney();
             }
         });
 

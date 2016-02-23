@@ -1,11 +1,21 @@
 package fr.iutvalence.info.m4104.gildedroseinn;
 
 import android.app.Application;
+import android.content.Context;
+import android.content.SharedPreferences;
+import fr.iutvalence.info.m4104.gildedroseinn.utils.ObjectSerializer;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class GildedRoseApplication extends Application {
+
+    private final static int DEFAULT_MONEY = 100;
+
+    private final static int DEFAULT_DAYS_PASSED = 0;
+
+    private SharedPreferences prefs;
 
     private List<Item> shop;
 
@@ -19,14 +29,50 @@ public class GildedRoseApplication extends Application {
         super();
         this.shop = new ArrayList<>();
         this.inventory = new ArrayList<>();
-        this.daysPassed = 0;
-        this.money = 50;
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
+        this.prefs = this.getSharedPreferences("GildedRose", Context.MODE_PRIVATE);
         this.generateShop();
+        this.loadPreferences();
+    }
+
+    public void loadPreferences() {
+        try {
+            String emptyArrayList = ObjectSerializer.toString(new ArrayList<Item>());
+            this.inventory = (ArrayList<Item>) ObjectSerializer.fromString(this.prefs.getString("InventoryItems",
+                    emptyArrayList));
+            this.daysPassed = this.prefs.getInt("Days", DEFAULT_DAYS_PASSED);
+            this.money = this.prefs.getInt("Money", DEFAULT_MONEY);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void savePreferences() {
+        SharedPreferences.Editor editor = this.prefs.edit();
+        try {
+            editor.putString("InventoryItems", ObjectSerializer.toString(this.getInventory()));
+            editor.putInt("Days", this.getDaysPassed());
+            editor.putInt("Money", this.getMoney());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        editor.commit();
+    }
+
+    /**
+     * Clear the SharedPreferences file.
+     * Used for tests
+     */
+    public void clearPreferences() {
+        SharedPreferences.Editor editor = this.prefs.edit();
+        editor.clear();
+        editor.commit();
     }
 
     private void generateShop() {
@@ -69,7 +115,7 @@ public class GildedRoseApplication extends Application {
     }
 
     public int getMoney() {
-        return money;
+        return this.money;
     }
 
     /**

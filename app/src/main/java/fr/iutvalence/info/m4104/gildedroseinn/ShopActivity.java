@@ -8,16 +8,18 @@ import android.widget.TextView;
 
 public class ShopActivity extends ActionBarActivity {
 
+    private GildedRoseApplication app;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.app = (GildedRoseApplication) this.getApplication();
+
         setContentView(R.layout.shop_layout);
 
         GildedRoseApplication app = (GildedRoseApplication) this.getApplication();
 
-        TextView money = (TextView) this.findViewById(R.id.money);
-        money.setText(money.getText() + " " + app.getMoney());
-        money.invalidate();
+        this.refreshMoney();
 
         ShopItemAdapter itemAdapter = new ShopItemAdapter(this, ((GildedRoseApplication) this.getApplication()).getShop());
 
@@ -25,4 +27,15 @@ public class ShopActivity extends ActionBarActivity {
         itemsView.setAdapter(itemAdapter);
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        this.app.savePreferences();
+    }
+
+    public void refreshMoney(){
+        TextView money = (TextView) this.findViewById(R.id.money);
+        money.setText("Money: " + app.getMoney());
+        money.invalidate();
+    }
 }
