@@ -30,25 +30,30 @@ public class ShopItemAdapter extends ArrayAdapter<Item> {
         name.setText(item.getName());
 
         TextView price = (TextView) v.findViewById(R.id.price);
-        price.setText(Integer.toString(item.getSellIn()));
+        price.setText("Price: " + Integer.toString(item.getSellIn()));
+
+        TextView quality = (TextView) v.findViewById(R.id.quality);
+        quality.setText("Quality: " + Integer.toString(item.getQuality()));
 
         v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 GildedRoseApplication app = (GildedRoseApplication) ShopItemAdapter.this.activity.getApplication();
-                app.addInventoryItem(item);
 
                 AlertDialog.Builder alertBuilder = new AlertDialog.Builder(ShopItemAdapter.this.getContext());
-
                 alertBuilder
-                        .setTitle("Achat confirmé")
-                        .setMessage("L'item " + item.getName() + " a bien été acheté !")
+                        .setTitle("Achat")
                         .setPositiveButton("Valider", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 dialogInterface.cancel(); // Just close the dialog
                             }
                         });
+
+                if (app.buyItem(item))
+                    alertBuilder.setMessage("L'item " + item.getName() + " a bien été acheté !");
+                else
+                    alertBuilder.setMessage("Vous n'avez pas assez d'argent !");
 
                 AlertDialog alert = alertBuilder.create();
                 alert.show();

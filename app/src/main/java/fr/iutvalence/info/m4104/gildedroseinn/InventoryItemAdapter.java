@@ -29,6 +29,9 @@ public class InventoryItemAdapter extends ArrayAdapter<Item> {
         TextView name = (TextView) v.findViewById(R.id.name);
         name.setText(item.getName());
 
+        TextView quality = (TextView) v.findViewById(R.id.quality);
+        quality.setText("Quality: " + Integer.toString(item.getQuality()));
+
         v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

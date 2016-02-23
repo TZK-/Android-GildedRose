@@ -11,10 +11,16 @@ public class GildedRoseApplication extends Application {
 
     private List<Item> inventory;
 
+    private int daysPassed;
+
+    private int money;
+
     public GildedRoseApplication() {
         super();
         this.shop = new ArrayList<>();
         this.inventory = new ArrayList<>();
+        this.daysPassed = 0;
+        this.money = 50;
     }
 
     @Override
@@ -34,16 +40,12 @@ public class GildedRoseApplication extends Application {
         this.addShopItem(new Item("Conjured Mana Cake", 3, 6));
     }
 
-    public void addShopItem(Item i){
+    public void addShopItem(Item i) {
         this.shop.add(i);
     }
 
-    public void addInventoryItem(Item i){
+    public void addInventoryItem(Item i) {
         this.inventory.add(i);
-    }
-
-    public void removeInventoryItem(Item i){
-        this.inventory.remove(i);
     }
 
     public List<Item> getShop() {
@@ -52,5 +54,35 @@ public class GildedRoseApplication extends Application {
 
     public List<Item> getInventory() {
         return this.inventory;
+    }
+
+    public int getDaysPassed() {
+        return this.daysPassed;
+    }
+
+    public void incrementNbDays() {
+        this.daysPassed++;
+    }
+
+    public void decreaseMoney(int money) {
+        this.money -= money;
+    }
+
+    public int getMoney() {
+        return money;
+    }
+
+    /**
+     * Buy an item.
+     *
+     * @param i The item to buy
+     * @return <tt>true</tt> if the item can be bought, <tt>false</tt> otherwise (no money)
+     */
+    public boolean buyItem(Item i) {
+        if (this.money < i.getSellIn())
+            return false;
+        this.addInventoryItem(i);
+        this.decreaseMoney(i.getSellIn());
+        return true;
     }
 }
