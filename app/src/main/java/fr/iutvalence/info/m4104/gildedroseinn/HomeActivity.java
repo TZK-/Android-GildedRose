@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -17,6 +18,8 @@ public class HomeActivity extends Activity {
 
     private GildedRoseApplication app;
 
+    private CountDownTimer timer;
+
     public HomeActivity() {
         super();
     }
@@ -27,6 +30,22 @@ public class HomeActivity extends Activity {
         setContentView(R.layout.home_layout);
         this.app = (GildedRoseApplication) this.getApplication();
         this.refreshDays();
+
+        this.timer = new CountDownTimer(5000, 20) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                // Nothing to do
+            }
+
+            @Override
+            public void onFinish() {
+                try {
+                    HomeActivity.this.nextDay();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }.start();
     }
 
     public void homeActivityClickListener(View view) {
@@ -52,11 +71,12 @@ public class HomeActivity extends Activity {
             GildedRose.updateItem(i);
         for (Item i : this.app.getInventory())
             GildedRose.updateItem(i);
+        this.timer.start();
     }
 
-    private void refreshDays(){
+    private void refreshDays() {
         TextView daysText = (TextView) this.findViewById(R.id.day_text);
-        daysText.setText("Day " + this.app.getDaysPassed());
+        daysText.setText("Days " + this.app.getDaysPassed());
         daysText.invalidate();
     }
 
