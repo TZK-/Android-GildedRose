@@ -80,7 +80,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:orientation="horizontal"
-            tools:context="fr.iutvalence.info.m4104.tictactoe.HomeActivity" >
+            tools:context="fr.iutvalence.info.m4104.tictactoe.HomeActivity" android:weightSum="1">
 
             <Button
                 android:id="@+id/next_button"
@@ -92,6 +92,13 @@
                 android:onClick="homeActivityClickListener"
                 android:text="Next"
                 android:textSize="24sp" />
+        </LinearLayout>
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Add Money"
+                    android:id="@+id/addMoney" android:onClick="homeActivityClickListener"/>
         </LinearLayout>
     </LinearLayout>
 

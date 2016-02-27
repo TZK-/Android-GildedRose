@@ -16,6 +16,10 @@ import java.io.IOException;
 
 public class HomeActivity extends Activity {
 
+    private static final int DEFAULT_MONEY_ADD = 10;
+
+    public static final int TIMER_IN_SECOND = 5;
+
     private GildedRoseApplication app;
 
     private CountDownTimer timer;
@@ -31,7 +35,9 @@ public class HomeActivity extends Activity {
         this.app = (GildedRoseApplication) this.getApplication();
         this.refreshDays();
 
-        this.timer = new CountDownTimer(5000, 20) {
+        // Add timer used to pass days automatically each 5sec
+        this.timer = new CountDownTimer(TIMER_IN_SECOND * 1000, 20) {
+
             @Override
             public void onTick(long millisUntilFinished) {
                 // Nothing to do
@@ -39,6 +45,7 @@ public class HomeActivity extends Activity {
 
             @Override
             public void onFinish() {
+                // When the timer is finished, call nextDay() method
                 try {
                     HomeActivity.this.nextDay();
                 } catch (Exception e) {
@@ -58,6 +65,9 @@ public class HomeActivity extends Activity {
                 break;
             case R.id.next_button:
                 nextDay();
+                break;
+            case R.id.addMoney:
+                this.app.increaseMoney(DEFAULT_MONEY_ADD);
                 break;
             default:
         }

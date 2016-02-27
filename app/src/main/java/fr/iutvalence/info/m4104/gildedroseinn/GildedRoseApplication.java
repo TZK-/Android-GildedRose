@@ -27,8 +27,8 @@ public class GildedRoseApplication extends Application {
 
     public GildedRoseApplication() {
         super();
-        this.shop = new ArrayList<>();
-        this.inventory = new ArrayList<>();
+        this.shop = new ArrayList<Item>();
+        this.inventory = new ArrayList<Item>();
     }
 
     @Override
@@ -116,6 +116,10 @@ public class GildedRoseApplication extends Application {
 
     public int getMoney() {
         return this.money;
+    }
+
+    public void increaseMoney(int money) {
+        this.money += money;
     }
 
     /**
