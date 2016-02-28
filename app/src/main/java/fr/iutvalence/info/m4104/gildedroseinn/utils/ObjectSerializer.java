@@ -10,7 +10,7 @@ public class ObjectSerializer {
      * Reads the object from Base64 string.
      *
      * @param s String to be converted
-     * @return deserialized Object
+     * @return the Object
      * @throws IOException            In case the data couldn’t be read
      * @throws ClassNotFoundException In case a wrong class was passed
      */
@@ -25,7 +25,7 @@ public class ObjectSerializer {
     /**
      * Converts an object implementing Serializable to a Base64 string.
      *
-     * @param o           String to be converted
+     * @param o String to be converted
      * @return String based on o       Serialized object as string
      * @throws IOException In case the data couldnt be read
      */

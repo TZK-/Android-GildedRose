@@ -42,6 +42,7 @@ public class GildedRoseApplication extends Application {
     public void loadPreferences() {
         try {
             String emptyArrayList = ObjectSerializer.toString(new ArrayList<Item>());
+            // Load preferences from the SharedPreferences file
             this.inventory = (ArrayList<Item>) ObjectSerializer.fromString(this.prefs.getString("InventoryItems",
                     emptyArrayList));
             this.daysPassed = this.prefs.getInt("Days", DEFAULT_DAYS_PASSED);
@@ -54,6 +55,7 @@ public class GildedRoseApplication extends Application {
     }
 
     public void savePreferences() {
+        // Save preferences into a SharedPreference file
         SharedPreferences.Editor editor = this.prefs.edit();
         try {
             editor.putString("InventoryItems", ObjectSerializer.toString(this.getInventory()));
